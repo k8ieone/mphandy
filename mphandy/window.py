@@ -2,7 +2,7 @@ import sys
 import gi
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
-from gi.repository import Gtk, Adw
+from gi.repository import Gtk, Adw, Gio, GLib
 
 from . import client
 
@@ -10,6 +10,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.build_main_view(self)
+        GLib.set_application_name("mphandy")
 
     def build_main_view(self, *args, **kwargs):
         # Defining stack and stackswitcher
@@ -59,13 +60,44 @@ class MainWindow(Gtk.ApplicationWindow):
         self.stack.add_titled(self.buttonbox, "1", "Now playing")
         self.stack.add_titled(self.check, "2", "Browse")
 
+        # Create a new action
+        action = Gio.SimpleAction.new("about", None)
+        action.connect("activate", self.show_about)
+        self.add_action(action)
+
+        menu = Gio.Menu.new()
+        menu.append("About", "win.about")
+
+        self.popover = Gtk.PopoverMenu()
+        self.popover.set_menu_model(menu)
+
+        self.hamburger = Gtk.MenuButton()
+        self.hamburger.set_popover(self.popover)
+        self.hamburger.set_icon_name("open-menu-symbolic")
+        self.header.pack_end(self.hamburger)
+
     def hello(self, button):
         print("General Kenobi...")
 
     def list_mpd_root(self, button):
         self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=client.client_test())
+        self.dialog.set_transient_for(self)
+        self.dialog.set_modal(self)
         self.dialog.present()
         print(client.client_test())
+
+    def show_about(self, action, param):
+        self.about = Gtk.AboutDialog()
+        self.about.set_transient_for(self)
+        self.about.set_modal(self)
+        self.about.set_authors(["k8ieone"])
+        self.about.set_copyright("Copyright 2022 k8ieone")
+        self.about.set_license_type(Gtk.License.MIT_X11)
+        self.about.set_website("https://github.com/k8ieone/mphandy")
+        self.about.set_website_label("GitHub repo")
+        self.about.set_version("(version too early to tell)")
+        self.about.set_logo_icon_name("org.example.example") # Location: /usr/share/icons/hicolor/scalable/apps/org.example.example.svg
+        self.about.show()
 
 class MyApp(Adw.Application):
     def __init__(self, **kwargs):
@@ -77,5 +109,5 @@ class MyApp(Adw.Application):
         self.window.present()
 
 if __name__ == "__main__":
-    app = MyApp(application_id="com.example.GtkApplication")
+    app = MyApp(application_id="one.k8ie.mphandy")
     app.run(sys.argv)
