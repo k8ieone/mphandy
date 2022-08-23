@@ -40,20 +40,20 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def build_player_box(self):
         # Box with all the buttons
-        buttonbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        buttonbox.set_margin_top(20)
-        buttonbox.set_margin_bottom(20)
-        buttonbox.set_margin_start(20)
-        buttonbox.set_margin_end(20)
-        buttonbox.set_spacing(100)
-        buttonbox.set_homogeneous(True)
+        playerbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        playerbox.set_margin_top(20)
+        playerbox.set_margin_bottom(20)
+        playerbox.set_margin_start(20)
+        playerbox.set_margin_end(20)
+        playerbox.set_spacing(100)
+        playerbox.set_homogeneous(True)
         button = Gtk.Button(label="Hello there!")
         button.connect('clicked', self.hello)
         button2 = Gtk.Button(label="MPD")
         button2.connect('clicked', self.list_mpd_root)
-        buttonbox.append(button) # Put button in the first of the two vertial boxes
-        buttonbox.append(button2) # Put button in the first of the two vertial boxes
-        self.stack.add_titled(buttonbox, "1", "Now playing")
+        playerbox.append(button) # Put button in the first of the two vertial boxes
+        playerbox.append(button2) # Put button in the first of the two vertial boxes
+        self.stack.add_titled(playerbox, "1", "Now playing")
 
     def build_browser_box(self):
         # Box with all the buttons
