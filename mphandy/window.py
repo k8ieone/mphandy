@@ -12,30 +12,43 @@ class MainWindow(Gtk.ApplicationWindow):
         self.build_main_view(self)
 
     def build_main_view(self, *args, **kwargs):
-        # Defining stack and stack switcher
+        # Defining stack and stackswitcher
         self.stack = Gtk.Stack()
         self.stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT_RIGHT)
         self.stack.set_transition_duration(1000)
         self.stackswitcher = Gtk.StackSwitcher(stack=self.stack)
 
+        # Create and set a headerbar for the window
+        self.header = Gtk.HeaderBar()
+        self.set_titlebar(self.header)
+
+        # Box for the stack switcher
+        self.swboxh = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        self.swboxh.append(self.stackswitcher)
+
+        # Set the stack switcher box as the title widget
+        self.header.set_title_widget(self.swboxh)
+
         # Box for all the boxes
         self.rootbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
-        # Box for the stack switcher
-        self.swboxh = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, )
-        self.swboxh.append(self.stackswitcher)
-
         # root box to window
         self.set_child(self.rootbox)
-        # Add the stack and the stack switcher box to the root box
-        self.rootbox.append(self.swboxh)
+
+        # Add the stack to the root box
         self.rootbox.append(self.stack)
 
         # Box with all the buttons
         self.buttonbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
-        self.button = Gtk.Button(label="Hello")
+        self.buttonbox.set_margin_top(20)
+        self.buttonbox.set_margin_bottom(20)
+        self.buttonbox.set_margin_start(50)
+        self.buttonbox.set_margin_end(50)
+        self.buttonbox.set_spacing(100)
+        self.buttonbox.set_homogeneous(True)
+        self.button = Gtk.Button(label="Hello there!")
         self.button.connect('clicked', self.hello)
-        self.button2 = Gtk.Button(label="Hello")
+        self.button2 = Gtk.Button(label="MPD")
         self.button2.connect('clicked', self.list_mpd_root)
         self.buttonbox.append(self.button) # Put button in the first of the two vertial boxes
         self.buttonbox.append(self.button2) # Put button in the first of the two vertial boxes
@@ -43,11 +56,11 @@ class MainWindow(Gtk.ApplicationWindow):
         self.check = Gtk.CheckButton(label="And goodbye?")
 
         # Add the button box to the stack page
-        self.stack.add_titled(self.buttonbox, "1", "Buttons")
-        self.stack.add_titled(self.check, "2", "Check")
+        self.stack.add_titled(self.buttonbox, "1", "Now playing")
+        self.stack.add_titled(self.check, "2", "Browse")
 
     def hello(self, button):
-        print("Hello world")
+        print("General Kenobi...")
 
     def list_mpd_root(self, button):
         self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=client.client_test())
@@ -60,9 +73,7 @@ class MyApp(Adw.Application):
         self.connect('activate', self.on_activate)
 
     def on_activate(self, app):
-        self.headerbar = Gtk.HeaderBar()
-        self.headerbar.show_close_button = False
-        self.window = MainWindow(application=app, titlebar=self.headerbar)
+        self.window = MainWindow(application=app)
         self.window.present()
 
 if __name__ == "__main__":
