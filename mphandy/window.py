@@ -11,6 +11,7 @@ class MainWindow(Gtk.ApplicationWindow):
         super().__init__(*args, **kwargs)
         self.build_main_view(self)
         GLib.set_application_name("mphandy")
+        self.c = client.mpdclient()
 
     def build_stack_switcher(self):
         # Defining stack and stackswitcher
@@ -145,13 +146,12 @@ class MainWindow(Gtk.ApplicationWindow):
         print("General Kenobi...")
 
     def list_mpd_root(self, button):
-        self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=client.client_test())
+        self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=self.c.get_song_info())
         self.dialog.add_button("Ok", 1)
         self.dialog.connect("response", self.close_dialog)
         self.dialog.set_transient_for(self)
         self.dialog.set_modal(self)
         self.dialog.present()
-        print(client.client_test())
 
     def close_dialog(self, action, param):
         self.dialog.close()
