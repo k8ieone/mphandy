@@ -60,13 +60,13 @@ class MainWindow(Gtk.ApplicationWindow):
         infobox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         infobox.set_spacing(1)
         infobox.set_homogeneous(True)
-        artistname = Gtk.Label.new()
+        self.artistname = Gtk.Label.new()
         albumname = Gtk.Label.new()
         songname = Gtk.Label.new()
-        artistname.set_markup("<span font_weight=\"normal\">Album Artist</span>")
+        self.artistname.set_markup("<span font_weight=\"normal\">Album Artist</span>")
         albumname.set_markup("<span font_weight=\"light\">Album Name</span>")
         songname.set_markup("<span size=\"large\" font_weight=\"bold\">Song Name</span>")
-        infobox.append(artistname)
+        infobox.append(self.artistname)
         infobox.append(albumname)
         infobox.append(songname)
         elementbox.append(infobox)
@@ -144,6 +144,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def hello(self, button):
         print("General Kenobi...")
+
+    def update_gui(self):
+        self.artistname.set_markup("<span font_weight=\"normal\">" + smt +"</span>")
 
     def list_mpd_root(self, button):
         self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=self.c.get_song_info())
