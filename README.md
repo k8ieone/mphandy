@@ -12,4 +12,6 @@ I'm a little stuck on having the window staying responsive while doing blocking 
 
 This is how mphandy looks at this point:
 
-![Screenshot](screenshot.png)
+<p align="center">
+  <img src="screenshot.png" />
+</p>
