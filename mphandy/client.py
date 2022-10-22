@@ -1,5 +1,5 @@
-from mpd import MPDClient
-import mpd
+from mpd import MPDClient # type: ignore
+import mpd # type: ignore
 import time
 
 class mpdclient():
