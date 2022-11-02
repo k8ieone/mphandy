@@ -1,10 +1,13 @@
 import sys
+import threading
 import gi # type: ignore
 gi.require_version('Gtk', '4.0')
 gi.require_version('Adw', '1')
 from gi.repository import Gtk, Adw, Gio, GLib # type: ignore
 
 from . import client
+
+import time
 
 class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
@@ -111,7 +114,7 @@ class MainWindow(Gtk.ApplicationWindow):
         browserbox.set_homogeneous(True)
         button = Gtk.Button(label="Hello there!")
         button.connect('clicked', self.hello)
-        button2 = Gtk.Button(label="MPD")
+        button2 = Gtk.Button(label="Blocking function")
         button2.connect('clicked', self.list_mpd_root)
         browserbox.append(button) # Put button in the first of the two vertial boxes
         browserbox.append(button2) # Put button in the first of the two vertial boxes
@@ -149,7 +152,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.artistname.set_markup("<span font_weight=\"normal\">" + smt +"</span>")
 
     def list_mpd_root(self, button):
-        self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text=self.c.get_song_info())
+        self.dialog = Gtk.MessageDialog(text="Server's response", secondary_text="something")
         self.dialog.add_button("Ok", 1)
         self.dialog.connect("response", self.close_dialog)
         self.dialog.set_transient_for(self)
